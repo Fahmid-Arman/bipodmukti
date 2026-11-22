@@ -1,5 +1,19 @@
 # Applink provisioning sheet for BipodMukti
 
+## Current status (23 Nov 2026)
+
+| Item | Value |
+|---|---|
+| SP account | `codekarkhana`, approval requested 23 Nov 00:26 |
+| Application | **BipodSafe**, `APP_019173`, Pending Approval (app names must be 4 to 9 characters) |
+| APIs on the app | SMS and Subscription (OTP based subscription allowed). USSD requested from Applink: every USSD keyword on service code 213 showed as unavailable in the portal |
+| SMS | shortcode `21213`, keyword `bipod` (`bm` was taken), sender name `BipodSafe`, delivery reports on, no charging |
+| Subscription | notification URL set, no charging, broadcast limit 9999/day |
+| Allowed hosts | `74.220.52.132` (Render Singapore, current) and `103.72.212.60` (dev laptop); asked Applink to allow `74.220.52.0/24` and `74.220.60.0/24` |
+| Whitelisted test number | `8801403098070` |
+| Read-only for us | number masking and advertisements are ON; asked Applink to switch both off |
+| Callback host | `https://bipodmukti.onrender.com` |
+
 What to enter at **user.applink.com.bd → API → Create New App**, and what to set in `.env` afterwards.
 
 ## Before you start
@@ -25,7 +39,7 @@ What to enter at **user.applink.com.bd → API → Create New App**, and what to
 
 | Field | Value |
 |---|---|
-| Keyword | `BM` (fallback: `BIPOD`) |
+| Keyword | `bipod` (registered; `bm` was taken) |
 | Shortcode | assigned by Applink, put it in `APPLINK_SMS_SHORTCODE` |
 | MO (receive) URL | `https://<host>/api/applink/sms/receive` |
 | Delivery report URL | `https://<host>/api/applink/sms/report` |
@@ -64,7 +78,7 @@ Then check connectivity from the server with the cheapest call (Base Size), in t
 
 ## Questions for the Applink mentoring session (24 to 30 Nov)
 
-1. Can an app send MT SMS to a number that has not subscribed to it (a family contact receiving their first alert or invitation)? If not, should the contact first opt in with `BM YES`, or through Subscription?
+1. Can an app send MT SMS to a number that has not subscribed to it (a family contact receiving their first alert or invitation)? If not, should the contact first opt in with `BIPOD YES`, or through Subscription?
 2. Are delivery reports available in Limited Production, and how fast do they usually arrive?
 3. Can one app have both a USSD code and an SMS keyword on the same shortcode? Which USSD code format will we get?
 4. Is the `vlrAddress` on the USSD callback usable to tell which upazila the caller is in? (We do not rely on it.)

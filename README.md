@@ -24,28 +24,28 @@ sequenceDiagram
     R->>A: dials *213*55#, presses 2 (HELP), 1 (rescue), 2 (shelter)
     A->>B: USSD receive callback (mo-init / mo-cont)
     B->>A: USSD send (mt-cont screens, mt-fin receipt)
-    B->>A: SMS send "ALERT H42 ... Reply BM OK H42"
+    B->>A: SMS send "ALERT H42 ... Reply BIPOD OK H42"
     A->>K: SMS (phone is off)
     A->>B: delivery report UNDELIVERABLE
     B->>A: SMS send to the next contact, at once
     A->>N: SMS alert H42
-    N->>A: SMS "BM OK H42"
+    N->>A: SMS "BIPOD OK H42"
     A->>B: SMS receive callback
     B->>A: SMS to Rahima "Rina is responding", to others "Rina is handling it"
 ```
 
-1. **Check in.** USSD menu (`*213*55#`): 1 SAFE, 2 HELP (rescue, medical, food), 3 moving to a shelter, 4 family contacts, 5 settings. One-dial shortcuts: `*213*55*1*1#` = safe at home. Or SMS to the shortcode: `BM SAFE`, `BM HELP rescue near Rajibpur school`.
-2. **Family is told.** Up to 3 contacts, in order. A help alert carries a short reference like `H42`; the contact replies `BM OK H42`.
+1. **Check in.** USSD menu (`*213*55#`): 1 SAFE, 2 HELP (rescue, medical, food), 3 moving to a shelter, 4 family contacts, 5 settings. One-dial shortcuts: `*213*55*1*1#` = safe at home. Or SMS to the shortcode: `BIPOD SAFE`, `BIPOD HELP rescue near Rajibpur school`.
+2. **Family is told.** Up to 3 contacts, in order. A help alert carries a short reference like `H42`; the contact replies `BIPOD OK H42`.
 3. **Nobody is forgotten.** No acknowledgement within the timeout (3 min by default), or a failed delivery report, moves the alert to the next contact, then to the area's volunteers, then flags it for the coordinator. Every step is on the incident timeline.
-4. **Roll call.** A coordinator asks everyone in an area to check in after a warning. At the deadline, each person who did not answer gets a "missing" alert to their family (`BM SAFE M12` = "I know she is safe", `BM HELP M12` = "send volunteers").
+4. **Roll call.** A coordinator asks everyone in an area to check in after a warning. At the deadline, each person who did not answer gets a "missing" alert to their family (`BIPOD SAFE M12` = "I know she is safe", `BIPOD HELP M12` = "send volunteers").
 
 ## Applink integration
 
 | Applink API | Calls | Used for |
 |---|---|---|
 | **USSD** | `POST /ussd/send` (mt-cont, mt-fin) + USSD receive callback | Check-in menu, join, family contacts, leave. Session state keyed on the platform's `sessionId` with a 2-minute TTL. |
-| **SMS** | `POST /sms/send` + SMS receive callback + delivery report callback | Alerts, acknowledgements, receipts, roll calls; `BM ...` commands; delivery reports trigger early escalation. |
-| **Subscription** | `POST /subscription/send` (action 1/0), `/subscription/query-base`, `/subscription/getSubscriberChargingInfo` + subscriber notification callback | Opt-in with stored consent wording, `BM STOP` opt-out, a local subscription mirror, base size as a health check. |
+| **SMS** | `POST /sms/send` + SMS receive callback + delivery report callback | Alerts, acknowledgements, receipts, roll calls; `BIPOD ...` commands; delivery reports trigger early escalation. |
+| **Subscription** | `POST /subscription/send` (action 1/0), `/subscription/query-base`, `/subscription/getSubscriberChargingInfo` + subscriber notification callback | Opt-in with stored consent wording, `BIPOD STOP` opt-out, a local subscription mirror, base size as a health check. |
 | **OTP** | `POST /otp/request`, `/otp/verify` | Web sign-up: verify a family member's number and activate the subscription. `referenceNo` never leaves the server. |
 
 Integration rules we follow (all tested):
