@@ -1,0 +1,17 @@
+# Keeps the free Render instance awake so Applink USSD callbacks never hit a
+# cold start (USSD sessions time out in seconds). Set the repository variable
+# KEEPALIVE_URL to the deployed base URL, e.g. https://bipodmukti.onrender.com
+name: keep-awake
+
+on:
+  schedule:
+    - cron: "*/10 * * * *"
+  workflow_dispatch:
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    if: ${{ vars.KEEPALIVE_URL != '' }}
+    steps:
+      - name: Ping /healthz
+        run: curl -fsS --max-time 60 --retry 2 "${{ vars.KEEPALIVE_URL }}/healthz"
