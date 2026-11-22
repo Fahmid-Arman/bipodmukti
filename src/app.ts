@@ -83,7 +83,20 @@ export async function buildApp(opts: { databasePath?: string; seed?: boolean; lo
   if (config.simulator) registerSimulator(app, ctx);
 
   await app.register(fastifyStatic, { root: join(root, "public"), extensions: ["html"] });
-  app.get("/healthz", async () => ({ ok: true, mode: config.simulator ? "simulator" : "applink" }));
+  // The public IP this server calls Applink from. It must be in the app's
+  // "Allowed Host Address(es)" on Applink, or every call fails with E1303.
+  let egressIp: string | null = null;
+  if (opts.logger !== false) {
+    void fetch("https://api.ipify.org?format=json", { signal: AbortSignal.timeout(8000) })
+      .then((r) => r.json() as Promise<{ ip?: string }>)
+      .then((j) => {
+        egressIp = j.ip ?? null;
+        if (egressIp) db.setKv("egress_ip", egressIp);
+        app.log.info({ egressIp }, "outbound IP for Applink allowed host addresses");
+      })
+      .catch(() => app.log.warn("could not look up the outbound IP"));
+  }
+  app.get("/healthz", async () => ({ ok: true, mode: config.simulator ? "simulator" : "applink", egressIp }));
 
   app.addHook("onClose", async () => db.close());
   return { app, ctx };
