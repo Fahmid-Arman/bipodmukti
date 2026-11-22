@@ -1,0 +1,22 @@
+# One-click deploy on Render (free plan). The public demo runs in simulator
+# mode so anyone can try it; switch SIMULATOR_ENABLED to false and add the
+# Applink variables from .env.example for the live integration.
+services:
+  - type: web
+    name: bipodmukti
+    runtime: node
+    plan: free
+    buildCommand: npm ci --omit=dev
+    startCommand: node src/server.ts
+    healthCheckPath: /healthz
+    envVars:
+      - key: NODE_VERSION
+        value: "24"
+      - key: SIMULATOR_ENABLED
+        value: "true"
+      - key: ACK_TIMEOUT_SECONDS
+        value: "45"
+      - key: SCHEDULER_TICK_SECONDS
+        value: "2"
+      - key: DASHBOARD_PASSWORD
+        sync: false
