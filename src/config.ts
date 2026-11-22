@@ -74,8 +74,8 @@ export const config = {
     applicationId: simulator ? env("APPLINK_APP_ID", "APP_SIMULATOR")! : requireEnv("APPLINK_APP_ID"),
     password: simulator ? env("APPLINK_PASSWORD", "simulator-password")! : requireEnv("APPLINK_PASSWORD"),
     timeoutMs: int("APPLINK_TIMEOUT_MS", 15_000),
-    /** SMS keyword that routes MO messages to us, e.g. "BM SAFE". */
-    keyword: env("APPLINK_SMS_KEYWORD", "BM")!.toUpperCase(),
+    /** SMS keyword that routes MO messages to us, e.g. "BIPOD SAFE". */
+    keyword: env("APPLINK_SMS_KEYWORD", "BIPOD")!.toUpperCase(),
     /** Shortcode users send SMS to. Display only; Applink assigns it. */
     shortcode: env("APPLINK_SMS_SHORTCODE", "21213")!,
     /** USSD code users dial. Display only; Applink assigns it. */

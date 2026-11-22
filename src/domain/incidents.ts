@@ -3,7 +3,7 @@
  *
  * A HELP check-in (or a missed roll call) opens an incident. The engine alerts
  * family contacts one at a time in priority order. Each contact gets
- * ACK_TIMEOUT_SECONDS to reply "BM OK <ref>". No reply, or a failed SMS
+ * ACK_TIMEOUT_SECONDS to reply "BIPOD OK <ref>". No reply, or a failed SMS
  * delivery, moves the incident to the next contact, then to the local
  * volunteers, then flags it for the coordinator. Every step is written to the
  * incident timeline, so the console shows exactly who was told and who acted.
@@ -363,7 +363,7 @@ export function resolveIncident(ctx: Ctx, inc: Incident, by: Person | undefined,
   ctx.bus.publish({ type: "incident", id: inc.id, summary: "resolved" });
 }
 
-/** "BM DONE H12" from whoever is handling it, or the member. */
+/** "BIPOD DONE H12" from whoever is handling it, or the member. */
 export function markDone(ctx: Ctx, ref: string, person: Person): ReplyOutcome {
   const inc = incidentByRef(ctx.db, ref);
   if (!inc) return { ok: false, reason: "not_found" };
@@ -374,7 +374,7 @@ export function markDone(ctx: Ctx, ref: string, person: Person): ReplyOutcome {
   return { ok: true, incident: incidentById(ctx.db, inc.id)!, member };
 }
 
-/** A family member answers a "missing" (or help) alert with "BM SAFE <ref>". */
+/** A family member answers a "missing" (or help) alert with "BIPOD SAFE <ref>". */
 export function confirmSafeOnBehalf(ctx: Ctx, ref: string, guardian: Person): ReplyOutcome {
   const inc = incidentByRef(ctx.db, ref);
   if (!inc || !canRespond(ctx.db, inc, guardian)) return { ok: false, reason: "not_found" };
@@ -385,7 +385,7 @@ export function confirmSafeOnBehalf(ctx: Ctx, ref: string, guardian: Person): Re
   return { ok: true, incident: incidentById(ctx.db, inc.id)!, member };
 }
 
-/** A family member answers a "missing" alert with "BM HELP <ref>": go straight to volunteers. */
+/** A family member answers a "missing" alert with "BIPOD HELP <ref>": go straight to volunteers. */
 export function reportNeedsHelp(ctx: Ctx, ref: string, guardian: Person): ReplyOutcome {
   const inc = incidentByRef(ctx.db, ref);
   if (!inc || !canRespond(ctx.db, inc, guardian)) return { ok: false, reason: "not_found" };
@@ -403,7 +403,7 @@ export function reportNeedsHelp(ctx: Ctx, ref: string, guardian: Person): ReplyO
   return { ok: true, incident: incidentById(ctx.db, inc.id)!, member };
 }
 
-/** Latest open incident this person was alerted about (for a bare "BM OK"). */
+/** Latest open incident this person was alerted about (for a bare "BIPOD OK"). */
 export function latestAlertFor(db: Db, person: Person): Incident | undefined {
   return db.get<Incident>(
     `SELECT i.* FROM incidents i JOIN messages m ON m.incident_id = i.id

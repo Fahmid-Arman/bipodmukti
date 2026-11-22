@@ -86,7 +86,7 @@ test("USSD help request escalates past a switched-off phone and is acknowledged 
   const rinaAlert = await waitFor(async () => (await get(`/sim/phones/${RINA}`)).sms.find((m: any) => m.text.includes(`ALERT ${ref}`)));
   assert.ok(rinaAlert);
 
-  await post(`/sim/phones/${RINA}/sms`, { text: `BM OK ${ref}` });
+  await post(`/sim/phones/${RINA}/sms`, { text: `BIPOD OK ${ref}` });
   const inc = await waitFor(async () => (await get("/api/console/incidents")).find((i: any) => i.ref === ref && i.status === "acknowledged"));
   assert.equal(inc.acknowledgedBy.name, "Rina");
   assert.ok(inc.events.some((e: any) => e.type === "delivery_failed"));
@@ -96,7 +96,7 @@ test("USSD help request escalates past a switched-off phone and is acknowledged 
 });
 
 test("a replayed MO callback is processed once", async () => {
-  const payload = { version: "1.0", applicationId: "APP_SIMULATOR", sourceAddress: "tel:8801900000017", message: "BM HELP food near bazar", requestId: "dup-1", encoding: "0" };
+  const payload = { version: "1.0", applicationId: "APP_SIMULATOR", sourceAddress: "tel:8801900000017", message: "BIPOD HELP food near bazar", requestId: "dup-1", encoding: "0" };
   const a = await post("/api/applink/sms/receive", payload);
   const b = await post("/api/applink/sms/receive", payload);
   assert.deepEqual(a, { statusCode: "S1000", statusDetail: "Success" });
@@ -107,7 +107,7 @@ test("a replayed MO callback is processed once", async () => {
 });
 
 test("callbacks answer 200 S1000 even for bad bodies and other apps", async () => {
-  for (const body of ["{not json", "", JSON.stringify({ applicationId: "APP_OTHER", sourceAddress: "tel:8801900000001", message: "BM SAFE", requestId: "x1" })]) {
+  for (const body of ["{not json", "", JSON.stringify({ applicationId: "APP_OTHER", sourceAddress: "tel:8801900000001", message: "BIPOD SAFE", requestId: "x1" })]) {
     const res = await fetch(`${base}/api/applink/sms/receive`, { method: "POST", headers: { "Content-Type": "application/json;charset=utf-8" }, body });
     assert.equal(res.status, 200);
     assert.equal((await res.json()).statusCode, "S1000");
@@ -117,13 +117,13 @@ test("callbacks answer 200 S1000 even for bad bodies and other apps", async () =
 test("roll call: a missed reply becomes a 'missing' alert that family can close", async () => {
   const rc = await post("/api/console/rollcalls", { areaId: "gabura", title: "Cyclone signal 7", minutes: 1 });
   assert.equal(rc.total, 2);
-  await post(`/sim/phones/${encodeURIComponent("tel:8801900000021")}/sms`, { text: "BM SAFE" });
+  await post(`/sim/phones/${encodeURIComponent("tel:8801900000021")}/sms`, { text: "BIPOD SAFE" });
   await waitFor(async () => (await get("/api/console/rollcalls")).find((r: any) => r.id === rc.id && r.safe === 1));
   await post(`/api/console/rollcalls/${rc.id}/close`, {});
   const missing = await waitFor(async () => (await get("/api/console/incidents")).find((i: any) => i.kind === "missing" && i.member?.name === "Harun"));
   const wife = encodeURIComponent("tel:8801900000024");
   await waitFor(async () => (await get(`/sim/phones/${wife}`)).sms.find((m: any) => m.text.includes(missing.ref)));
-  await post(`/sim/phones/${wife}/sms`, { text: `BM SAFE ${missing.ref}` });
+  await post(`/sim/phones/${wife}/sms`, { text: `BIPOD SAFE ${missing.ref}` });
   const closed = await waitFor(async () => (await get("/api/console/rollcalls")).find((r: any) => r.id === rc.id && r.confirmed_safe === 1));
   assert.equal(closed.no_response, 0);
 });
@@ -142,9 +142,9 @@ test("web sign-up with OTP verifies the number and adds family contacts", async 
   assert.equal(c.results[1].ok, false);
 });
 
-test("BM STOP opts out and stops alerts", async () => {
+test("BIPOD STOP opts out and stops alerts", async () => {
   const addr = encodeURIComponent("tel:8801900000031");
-  await post(`/sim/phones/${addr}/sms`, { text: "BM STOP" });
+  await post(`/sim/phones/${addr}/sms`, { text: "BIPOD STOP" });
   await waitFor(async () => (await get("/api/console/people")).every((p: any) => p.name !== "Momena"));
   const msgs = (await get(`/sim/phones/${addr}`)).sms;
   await waitFor(async () => (await get(`/sim/phones/${addr}`)).sms.find((m: any) => m.text.includes("unsubscribed")));

@@ -3,7 +3,7 @@
 const { esc, api, time, left } = BM;
 const phones = new Map();
 let shown = [];
-let info = { ussdCode: "*213*55#", keyword: "BM" };
+let info = { ussdCode: "*213*55#", keyword: "BIPOD" };
 
 const enc = (a) => encodeURIComponent(a);
 

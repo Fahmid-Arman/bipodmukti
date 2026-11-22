@@ -40,15 +40,15 @@ test("subscriptionStatus is compared without the trailing dot", () => {
 });
 
 test("SMS commands parse with or without the keyword", () => {
-  assert.deepEqual(parseSms("BM SAFE"), { kind: "safe", ref: undefined, place: undefined });
-  assert.deepEqual(parseSms("bm help rescue at Rajibpur school"), { kind: "help", ref: undefined, need: "rescue", place: "Rajibpur school" });
+  assert.deepEqual(parseSms("BIPOD SAFE"), { kind: "safe", ref: undefined, place: undefined });
+  assert.deepEqual(parseSms("bipod help rescue at Rajibpur school"), { kind: "help", ref: undefined, need: "rescue", place: "Rajibpur school" });
   assert.deepEqual(parseSms("HELP medical"), { kind: "help", ref: undefined, need: "medical", place: undefined });
-  assert.deepEqual(parseSms("BM OK h42"), { kind: "ack", ref: "H42" });
-  assert.deepEqual(parseSms("BM SAFE M12"), { kind: "safe", ref: "M12", place: undefined });
-  assert.deepEqual(parseSms("BM ADD 01712345678 Karim Uddin"), { kind: "add", number: "01712345678", name: "Karim Uddin" });
+  assert.deepEqual(parseSms("BIPOD OK h42"), { kind: "ack", ref: "H42" });
+  assert.deepEqual(parseSms("BIPOD SAFE M12"), { kind: "safe", ref: "M12", place: undefined });
+  assert.deepEqual(parseSms("BIPOD ADD 01712345678 Karim Uddin"), { kind: "add", number: "01712345678", name: "Karim Uddin" });
   assert.equal(parseSms("STOP").kind, "stop");
-  assert.equal(parseSms("bm bipod").kind, "help");
-  assert.equal(parseSms("BM").kind, "info");
+  assert.equal(parseSms("bipod sos").kind, "help");
+  assert.equal(parseSms("BIPOD").kind, "info");
   assert.equal(parseSms("hello there").kind, "unknown");
 });
 

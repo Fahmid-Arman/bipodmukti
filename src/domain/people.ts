@@ -117,7 +117,7 @@ export type AddContactResult =
 
 /**
  * Add a family contact for a member and send them an invitation SMS.
- * The contact can decline at any time (BM NO / BM STOP).
+ * The contact can decline at any time (BIPOD NO / BIPOD STOP).
  */
 export function addContact(
   ctx: Ctx,
@@ -165,7 +165,7 @@ export function addContact(
   return { ok: true, contact, guardian, created: true };
 }
 
-/** A guardian answered an invitation (BM YES / BM NO). Applies to every pending invite they have. */
+/** A guardian answered an invitation (BIPOD YES / BIPOD NO). Applies to every pending invite they have. */
 export function answerInvites(ctx: Ctx, guardian: Person, accept: boolean): Person[] {
   const pending = ctx.db.all<{ id: number; member_id: number }>(
     "SELECT id, member_id FROM contacts WHERE guardian_id = ? AND status = 'invited'",

@@ -1,19 +1,19 @@
 /**
  * Incoming SMS (MO) commands. Applink delivers the text with the keyword
- * included ("BM SAFE"); we also accept it without the keyword.
+ * included ("BIPOD SAFE"); we also accept it without the keyword.
  *
- *   BM SAFE [place]            I am safe
- *   BM HELP [need] [place]     I need help (need: rescue | medical | food | other)
- *   BM MOVE [place]            moving to a shelter
- *   BM OK <ref>                family/volunteer: I am handling it
- *   BM SAFE <ref>              family: I know they are safe
- *   BM HELP <ref>              family: they need help, alert volunteers
- *   BM DONE <ref>              close a request
- *   BM ADD <number> [name]     add a family contact
- *   BM YES / BM NO             accept / decline being a family contact
- *   BM JOIN                    join
- *   BM STOP                    leave (also STOP, UNSUB, OFF)
- *   BM STATUS, BM INFO
+ *   BIPOD SAFE [place]            I am safe
+ *   BIPOD HELP [need] [place]     I need help (need: rescue | medical | food | other)
+ *   BIPOD MOVE [place]            moving to a shelter
+ *   BIPOD OK <ref>                family/volunteer: I am handling it
+ *   BIPOD SAFE <ref>              family: I know they are safe
+ *   BIPOD HELP <ref>              family: they need help, alert volunteers
+ *   BIPOD DONE <ref>              close a request
+ *   BIPOD ADD <number> [name]     add a family contact
+ *   BIPOD YES / BIPOD NO             accept / decline being a family contact
+ *   BIPOD JOIN                    join
+ *   BIPOD STOP                    leave (also STOP, UNSUB, OFF)
+ *   BIPOD STATUS, BIPOD INFO
  */
 
 import { config } from "../config.ts";
