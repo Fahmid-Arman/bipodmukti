@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>BipodMukti phone simulator</title>
+  <link rel="stylesheet" href="/css/app.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="logo" href="/">BipodMukti<span>Phone simulator</span></a>
+    <span class="pill" id="mode">SIMULATOR</span>
+    <nav>
+      <a href="/console">Console</a>
+      <a href="/simulator" class="active">Phone simulator</a>
+      <a href="/join">Join</a>
+    </nav>
+  </header>
+
+  <main class="wrap">
+    <div id="disabled" class="notice hidden">The simulator is off on this server (live Applink mode). Use real Banglalink phones, or start the server with <code>SIMULATOR_ENABLED=true</code>.</div>
+
+    <div class="split">
+      <section>
+        <div class="panel" style="margin-bottom:16px">
+          <div class="row">
+            <div>
+              <label for="pick">Show phone</label>
+              <select id="pick"></select>
+            </div>
+            <div>
+              <label for="newNum">Or add a number</label>
+              <input id="newNum" placeholder="019XXXXXXXX">
+            </div>
+            <div style="flex:0"><button class="btn" id="addBtn" type="button">Add phone</button></div>
+          </div>
+          <p class="muted" style="margin:10px 0 0;font-size:.88rem">Each phone below is a basic phone on a simulated network. It sends real USSD and SMS callbacks to BipodMukti, in the same JSON Applink sends, and shows what BipodMukti sends back through the Applink API. Switch a phone off to see a failed delivery move the alert to the next family member.</p>
+        </div>
+        <div class="phones" id="phones"></div>
+      </section>
+
+      <aside class="panel">
+        <h2>Latest request <span class="right"><a href="/console">open console</a></span></h2>
+        <div id="latest"><div class="empty">No requests yet.</div></div>
+      </aside>
+    </div>
+  </main>
+
+  <script src="/js/common.js"></script>
+  <script src="/js/simulator.js"></script>
+</body>
+</html>

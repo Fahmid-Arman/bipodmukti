@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>BipodMukti console</title>
+  <link rel="stylesheet" href="/css/app.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="logo" href="/">BipodMukti<span>Coordinator console</span></a>
+    <span class="pill" id="mode">…</span>
+    <span class="pill" id="health" title="Applink Subscription base size, refreshed every 10 minutes">Applink …</span>
+    <nav>
+      <a href="/console" class="active">Console</a>
+      <a href="/simulator">Phone simulator</a>
+      <a href="/join">Join</a>
+    </nav>
+  </header>
+
+  <main class="wrap">
+    <section class="stats" id="stats"></section>
+
+    <div class="grid">
+      <section>
+        <div class="panel">
+          <h2>Live requests <span class="right muted" id="howto"></span></h2>
+          <div id="incidents"><div class="empty">Loading…</div></div>
+        </div>
+      </section>
+
+      <aside>
+        <div class="panel">
+          <h2>Safety roll call</h2>
+          <form id="rcForm">
+            <div class="row">
+              <div>
+                <label for="rcArea">Area</label>
+                <select id="rcArea"></select>
+              </div>
+              <div style="max-width:110px">
+                <label for="rcMin">Reply within</label>
+                <select id="rcMin">
+                  <option value="1">1 min (demo)</option>
+                  <option value="2">2 min (demo)</option>
+                  <option value="15">15 min</option>
+                  <option value="30" selected>30 min</option>
+                  <option value="60">60 min</option>
+                </select>
+              </div>
+            </div>
+            <label for="rcTitle">Message</label>
+            <input id="rcTitle" maxlength="50" value="Flood warning: Brahmaputra rising">
+            <div class="actions"><button class="btn" type="submit">Start roll call</button></div>
+          </form>
+          <div id="rollcalls"></div>
+        </div>
+
+        <div class="panel">
+          <h2>Areas</h2>
+          <div id="map"></div>
+          <table id="areas"></table>
+        </div>
+
+        <div class="panel">
+          <h2>Applink activity <span class="right"><button class="btn small ghost" id="healthBtn" type="button">Check Applink</button></span></h2>
+          <div class="feed" id="apiFeed"></div>
+          <h2 style="margin-top:12px">Callbacks received</h2>
+          <div class="feed" id="cbFeed"></div>
+        </div>
+      </aside>
+    </div>
+    <footer>BipodMukti by Code Karkhana · AppQuest 2.0 · Built on Applink SMS, USSD, Subscription and OTP APIs</footer>
+  </main>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+  <script src="/js/common.js"></script>
+  <script src="/js/console.js"></script>
+</body>
+</html>

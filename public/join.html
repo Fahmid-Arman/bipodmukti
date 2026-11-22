@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Join BipodMukti</title>
+  <link rel="stylesheet" href="/css/app.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="logo" href="/">BipodMukti<span>Join</span></a>
+    <nav>
+      <a href="/console">Console</a>
+      <a href="/simulator">Phone simulator</a>
+      <a href="/join" class="active">Join</a>
+    </nav>
+  </header>
+
+  <main class="wrap" style="max-width:560px">
+    <div class="panel">
+      <h1 style="font-size:1.4rem">Join BipodMukti</h1>
+      <p class="muted">For family members who use the web. People on basic phones can join by dialling <b id="ussd">the USSD code</b>.</p>
+
+      <form id="step1">
+        <label for="name">Your name</label>
+        <input id="name" maxlength="30" required placeholder="e.g. Rahima Begum">
+        <label for="number">Mobile number (Banglalink)</label>
+        <input id="number" inputmode="tel" required placeholder="019XXXXXXXX">
+        <label for="area">Your area</label>
+        <select id="area"></select>
+        <p class="muted" id="consent" style="font-size:.88rem"></p>
+        <div class="actions"><button class="btn" type="submit">Send me a code</button></div>
+      </form>
+
+      <form id="step2" class="hidden">
+        <p id="sentTo"></p>
+        <label for="otp">Code from the SMS</label>
+        <input id="otp" inputmode="numeric" maxlength="8" required placeholder="6-digit code">
+        <div class="actions"><button class="btn" type="submit">Verify and join</button><button class="btn ghost" type="button" id="restart">Start again</button></div>
+      </form>
+
+      <form id="step3" class="hidden">
+        <div class="ok-box" id="welcome"></div>
+        <h2 style="margin-top:14px">Add up to 3 family contacts</h2>
+        <p class="muted" style="font-size:.88rem">They get an SMS asking them to accept. If you ask for help, we alert them one by one until someone replies.</p>
+        <div id="contacts"></div>
+        <div class="actions"><button class="btn" type="submit">Save contacts</button></div>
+      </form>
+
+      <div id="msg" style="margin-top:12px"></div>
+    </div>
+    <p class="muted" style="font-size:.82rem;text-align:center">Your number is verified through Applink OTP. We store only what we need to alert your family.</p>
+  </main>
+
+  <script src="/js/common.js"></script>
+  <script src="/js/join.js"></script>
+</body>
+</html>

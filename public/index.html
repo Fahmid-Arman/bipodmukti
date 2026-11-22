@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>BipodMukti</title>
+  <meta name="description" content="Safety check-ins for basic phones during floods and cyclones in Bangladesh. Built on Applink SMS, USSD, Subscription and OTP.">
+  <link rel="stylesheet" href="/css/app.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="logo" href="/">BipodMukti<span>বিপদমুক্তি</span></a>
+    <nav>
+      <a href="/console">Coordinator console</a>
+      <a href="/simulator">Phone simulator</a>
+      <a href="/join">Join</a>
+    </nav>
+  </header>
+
+  <main class="wrap">
+    <section class="hero">
+      <h1>"I am safe." From any phone, with no internet.</h1>
+      <p>When floods and cyclones hit, mobile data fails first and families panic. BipodMukti lets a person check in from a basic phone with one USSD dial or one SMS. Their family gets an SMS at once. If someone needs help and nobody replies, BipodMukti moves to the next family member, then to local volunteers, until a person confirms they are handling it.</p>
+      <div class="actions">
+        <a class="btn" href="/simulator">Try it on the phone simulator</a>
+        <a class="btn ghost" href="/console">Open the coordinator console</a>
+      </div>
+    </section>
+
+    <section class="cards">
+      <div class="panel">
+        <h3>1. Check in</h3>
+        <p>Dial <b><code id="u1">*213*55#</code></b> and press 1 for SAFE or 2 for HELP, or send <code id="k1">BM SAFE</code> / <code>BM HELP rescue</code> to <code id="s1">21213</code>. Works on any Banglalink phone.</p>
+      </div>
+      <div class="panel">
+        <h3>2. Family is told</h3>
+        <p>Up to three family contacts, in order. Each help alert has a short reference like <span class="ref">H42</span>. The contact replies <code>BM OK H42</code> to say "I am handling it".</p>
+      </div>
+      <div class="panel">
+        <h3>3. Nobody is forgotten</h3>
+        <p>No reply in time, or the SMS fails? The next contact is alerted, then local volunteers. After a warning, coordinators run a roll call for a whole area and see who has not answered.</p>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>Built on Applink</h2>
+      <table>
+        <tr><th>Applink API</th><th>What BipodMukti uses it for</th></tr>
+        <tr><td><b>USSD</b></td><td>Check-in menu on basic phones: SAFE, HELP (rescue, medical, food), moving to shelter, family contacts, join and leave. One-dial shortcut: <code>*213*55*1*1#</code> = safe at home.</td></tr>
+        <tr><td><b>SMS</b></td><td>Help alerts, acknowledgements, roll calls and receipts (MT); replies like <code>BM OK H42</code> (MO); delivery reports to skip a contact whose phone is off.</td></tr>
+        <tr><td><b>Subscription</b></td><td>Opt-in with recorded consent, opt-out with <code>BM STOP</code>, a local mirror fed by subscriber notifications, base size as a health check.</td></tr>
+        <tr><td><b>OTP</b></td><td>Web sign-up for family members and NGO staff: verify the number and activate the subscription.</td></tr>
+      </table>
+    </section>
+
+    <footer>BipodMukti by Code Karkhana for AppQuest 2.0. Demo data only: every name and number in the simulator is invented. In an emergency, call 999.</footer>
+  </main>
+  <script src="/js/common.js"></script>
+  <script>
+    BM.api("/api/public/info").then((i) => {
+      document.getElementById("u1").textContent = i.ussdCode;
+      document.getElementById("k1").textContent = `${i.keyword} SAFE`;
+      document.getElementById("s1").textContent = i.shortcode;
+    }).catch(() => {});
+  </script>
+</body>
+</html>
